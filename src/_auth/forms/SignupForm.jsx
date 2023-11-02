@@ -13,9 +13,15 @@ import { Input } from "@/components/ui/input";
 import { SignupValidation } from "./../../lib/validation/index";
 import Loader from "../../components/shared/Loader";
 import { Link } from "react-router-dom";
-import { createUserAccount } from "../../lib/appwrite/api";
+import { useToast } from '@/components/ui/use-toast';
+import { useCreateUserAccountMutation ,useSignInAccount } from "../../lib/react-query/queriesAndMutations";
+
+
 export function SignupForm() {
-  const isLoading = false;
+  const toast = useToast();
+  
+  const {mutateAsync: createUserAccount , isLoading : isCreatingUser} = useCreateUserAccountMutation();
+  const {mutateAsync : signInAccount , isLoading : isSigningIn} = useSignInAccount();
   const form = useForm({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
@@ -30,7 +36,13 @@ export function SignupForm() {
   async function onSubmit(SignupValidation) {
     // create an new user
     const newUser = await createUserAccount(SignupValidation);
-    console.log(newUser);
+
+    if (!newUser) {
+      return toast({
+        title: "Sign up failed . Please try again ",
+      });
+    }
+
   }
   return (
     <Form {...form}>
