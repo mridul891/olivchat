@@ -1,6 +1,6 @@
 import {
     useQuery // used  for fetching the data from the server
-    , useMutation, // used for modifying the data 
+    ,useMutation, // used for modifying the data 
     useQueryClient,
     useInfiniteQuery
 } from "@tanstack/react-query"
@@ -12,6 +12,6 @@ export const useCreateUserAccountMutation = () => {
 }
 export const useSignInAccount = () => {
     return useMutation({
-        mutationFn: (user) => signInAccount(user)
+        mutationFn: (user) => signInAccount(user),
     })
 }
